@@ -76,12 +76,12 @@ def train_network(x_train,y_train):
             # shuffle data
             shuffle_unison(x_train, y_train)
             # split for batch
-            x_train = np.array_split(x_train, ITER)
-            y_train = np.array_split(y_train, ITER)
+            x_train_ = np.array_split(x_train, ITER)
+            y_train_ = np.array_split(y_train, ITER)
             for j in range(ITER):
                 # check empty or not
-                if x_train[j].size:
-                    optimizer_, loss_ = sess.run([optimizer, loss], feed_dict={xp: x_train[j], yp: y_train[j]})
+                if x_train_[j].size:
+                    optimizer_, loss_ = sess.run([optimizer, loss], feed_dict={xp: x_train_[j], yp: y_train_[j]})
             print ('{:{}}: {}'.format('Loss', SPACE, loss_))
 
 def main():
