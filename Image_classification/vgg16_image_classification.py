@@ -2,6 +2,7 @@ import tensorflow as tf
 import tensorflow.contrib.slim.nets as nets
 import tensorflow.contrib.slim as slim
 import numpy as np
+import math
 from tensorflow.python.training import saver
 
 # cifar10 dataset 
@@ -16,7 +17,7 @@ SUMMARIZE = 10
 BATCH_SIZE = 10
 EPOCH = 100
 LR = 0.001
-ITER = int(TRAIN_SIZE/BATCH_SIZE+0.5)
+ITER = math.ceil(TRAIN_SIZE/BATCH_SIZE)
 
 # define placeholder 
 xp = tf.placeholder(tf.float32, shape = (None, None, None, 3))
@@ -71,14 +72,16 @@ def train_network(x_train,y_train):
         restorer.restore(sess, './models/vgg_16.ckpt')
         # training
         for i in range(EPOCH):
+            print ('{:{}}: {}'.format('Epoch', SPACE, i))
             # shuffle data
             shuffle_unison(x_train, y_train)
             # split for batch
             x_train = np.array_split(x_train, ITER)
             y_train = np.array_split(y_train, ITER)
             for j in range(ITER):
-                optimizer_, loss_ = sess.run([optimizer, loss], feed_dict={xp: x_train[j], yp: y_train[j]})
-            print ('{:{}}: {}'.format('Epoch', SPACE, i))
+                # check empty or not
+                if x_train[j].size:
+                    optimizer_, loss_ = sess.run([optimizer, loss], feed_dict={xp: x_train[j], yp: y_train[j]})
             print ('{:{}}: {}'.format('Loss', SPACE, loss_))
 
 def main():
