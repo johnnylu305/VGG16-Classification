@@ -1,4 +1,4 @@
-# VGG16-Classification
+# VGG16-Image-Classification
 - Implement image classification by tensorflow
 - Use pretrained VGG16
 - Fine-tune by cifar10
